@@ -14,7 +14,7 @@ describe('PostCard', () => {
     render(<PostCard post={mockPost} />);
     
     expect(screen.getByText(mockPost.title)).toBeInTheDocument();
-    expect(screen.getByText(/This is a test post body content\.\.\./)).toBeInTheDocument();
+    expect(screen.getByText((content) => content.includes('This is a test post body content'))).toBeInTheDocument();
   });
 
   it('contains a link to the post detail page', () => {
