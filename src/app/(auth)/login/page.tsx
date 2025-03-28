@@ -85,7 +85,7 @@ export default function LoginPage() {
                         borderColor: 'error.main', 
                         p: 2 
                       }}>
-                        <Typography color="error.main">{error}</Typography>
+                        <Typography color="white">{error}</Typography>
                       </Box>
                     )}
 
