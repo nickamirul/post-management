@@ -13,16 +13,19 @@ export default function PostsPage() {
   const { posts, loading, error } = useSelector(
     (state: RootState) => state.posts
   );
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    console.log('Auth Loading:', authLoading); // Debugging line
+    console.log('isAuthenticated:', isAuthenticated); // Debugging line
+    if (authLoading) return; // Wait for loading to finish
     if (!isAuthenticated) {
       router.push('/login');
       return;
     }
     dispatch(fetchPosts());
-  }, [dispatch, isAuthenticated, router]);
+  }, [dispatch, isAuthenticated, router, authLoading]);
 
   if (loading) {
     return (

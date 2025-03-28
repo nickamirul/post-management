@@ -3,10 +3,17 @@
 import Link from 'next/link';
 import { useAuth } from '../hooks/useAuth';
 import { Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 // import { theme } from '../theme/theme';
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <header className="bg-white text-black p-4 shadow-md">
@@ -31,7 +38,7 @@ const Header = () => {
             <div className="flex items-center space-x-4">
               <span>Welcome, {user?.username}</span>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition"
               >
                 Logout

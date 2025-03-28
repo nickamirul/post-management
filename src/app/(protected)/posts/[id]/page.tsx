@@ -20,7 +20,7 @@ export default function PostDetailPage() {
   const { currentPost, comments, loading, error } = useSelector(
     (state: RootState) => state.posts
   );
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -28,13 +28,16 @@ export default function PostDetailPage() {
   const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(true);
 
   useEffect(() => {
+    console.log('Auth Loading:', authLoading);
+    console.log('isAuthenticated:', isAuthenticated);
+    if (authLoading) return;
     if (!isAuthenticated) {
       router.push('/login');
       return;
     }
     dispatch(fetchPostById(Number(id)));
     dispatch(fetchCommentsByPostId(Number(id)));
-  }, [dispatch, id, isAuthenticated, router]);
+  }, [dispatch, id, isAuthenticated, router, authLoading]);
 
   useEffect(() => {
     if (currentPost) {
