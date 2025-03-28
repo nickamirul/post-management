@@ -1,3 +1,4 @@
+import React from 'react';
 import { Comment } from '../types';
 import { useAuth } from '../hooks/useAuth';
 import { useDispatch } from 'react-redux';
@@ -8,26 +9,24 @@ interface CommentProps {
   onDelete: (commentId: number) => void;
 }
 
-const CommentComponent = ({ comment, onDelete }: CommentProps) => {
+const CommentComponent: React.FC<CommentProps> = ({ comment, onDelete }) => {
   const { isAuthenticated, user } = useAuth();
 
   return (
-    <div className="bg-gray-50 p-4 rounded-lg mb-3">
-      <div className="flex justify-between items-start">
-        <div>
-          <h4 className="font-semibold text-blue-600">{comment.name}</h4>
-          <p className="text-sm text-gray-500 mb-2">{comment.email}</p>
-          <p className="text-gray-700">{comment.body}</p>
-        </div>
-        {isAuthenticated && user?.isAdmin && (
-          <button
-            onClick={() => onDelete(comment.id)}
-            className="text-red-500 hover:text-red-700"
-          >
-            Delete
-          </button>
-        )}
+    <div className="bg-gray-100 p-4 rounded-lg shadow-md flex justify-between items-center">
+      <div>
+        <h4 className="font-semibold text-blue-600">{comment.name}</h4>
+        <p className="text-sm text-gray-500 mb-2">{comment.email}</p>
+        <p className="text-gray-700">{comment.body}</p>
       </div>
+      {isAuthenticated && user?.isAdmin && (
+        <button
+          onClick={() => onDelete(comment.id)}
+          className="bg-red-500 text-white px-4 py-2 rounded ml-4"
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 };

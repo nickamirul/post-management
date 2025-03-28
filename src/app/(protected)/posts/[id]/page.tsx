@@ -25,6 +25,7 @@ export default function PostDetailPage() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
+  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -64,6 +65,21 @@ export default function PostDetailPage() {
     dispatch(deleteComment(commentId));
   };
 
+  const handleEditButtonClick = () => {
+    setIsEditing(true);
+    setShowEditDeleteButtons(false);
+  };
+
+  const handleSaveButtonClick = () => {
+    handleUpdatePost();
+    setShowEditDeleteButtons(true);
+  };
+
+  const handleCancelButtonClick = () => {
+    setIsEditing(false);
+    setShowEditDeleteButtons(true);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -100,13 +116,13 @@ export default function PostDetailPage() {
               className="w-full p-2 border border-gray-300 rounded mb-2"
             />
             <button
-              onClick={handleUpdatePost}
+              onClick={handleSaveButtonClick}
               className="bg-green-500 text-white px-4 py-2 rounded mr-2"
             >
               Save
             </button>
             <button
-              onClick={() => setIsEditing(false)}
+              onClick={handleCancelButtonClick}
               className="bg-gray-500 text-white px-4 py-2 rounded"
             >
               Cancel
@@ -115,25 +131,25 @@ export default function PostDetailPage() {
         ) : (
           <div className="flex justify-between items-start">
             <h2 className="text-2xl font-bold mb-4">{currentPost.title}</h2>
-            {isAuthenticated && user?.isAdmin && (
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={handleDeletePost}
-                  className="bg-red-500 text-white px-4 py-2 rounded"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
           </div>
         )}
         <p className="text-gray-700">{currentPost.body}</p>
+        {isAuthenticated && user?.isAdmin && showEditDeleteButtons && (
+          <div className="flex space-x-2 mt-4">
+            <button
+              onClick={handleEditButtonClick}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleDeletePost}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
