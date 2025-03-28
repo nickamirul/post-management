@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useAuth } from '../hooks/useAuth';
+import { Typography } from '@mui/material';
+// import { theme } from '../theme/theme';
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -10,7 +12,19 @@ const Header = () => {
     <header className="bg-white text-black p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/posts" className="text-2xl font-bold">
-          Post Manager
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontWeight: 700,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            Post<span className='text-orange-500'>Manager</span>
+          </Typography>
         </Link>
         <nav>
           {isAuthenticated ? (

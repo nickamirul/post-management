@@ -3,6 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../hooks/useAuth';
 import { FormEvent, useState } from 'react';
+import {Box, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { motion } from 'framer-motion'
+import { LoadingButton } from '@mui/lab';
+import Lottie from 'lottie-react';
+import postAnimation from '../../../assets/animations/post.json';
 
 const HARDCODED_USERS = [
   {
@@ -25,6 +30,9 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const router = useRouter();
+  const theme = useTheme();
+  const is900 = useMediaQuery(theme.breakpoints.down(900));
+  const is480 = useMediaQuery(theme.breakpoints.down(480));
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -43,73 +51,79 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <Stack width={'100vw'} height={'100vh'} flexDirection={'row'} sx={{overflowY:"hidden"}}>
+        
+        {!is900 && 
+        <Stack bgcolor={'black'} flex={1} justifyContent={'center'} alignItems={'center'}>
+          <Lottie 
+            animationData={postAnimation} 
+            style={{ width: '50%', height: 'auto' }}
+          />
+        </Stack> 
+        }
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <h2 className="text-2xl font-bold text-black">Sign in to your account</h2>
-          <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4">
-                <div className="flex">
-                  <div className="ml-3">
-                    <p className="text-sm text-red-700">{error}</p>
-                  </div>
-                </div>
-              </div>
-            )}
+        <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
 
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Username
-              </label>
-              <div className="mt-1">
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
+              <Stack flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
+                <Stack rowGap={'.4rem'}>
+                  <Stack flexDirection={'row'} alignItems={'baseline'}>
+                    <Typography variant='h2' sx={{wordBreak:"break-word"}} fontWeight={600}>Post</Typography> 
+                    <Typography variant='h2'  sx={{wordBreak:"break-word"}} fontWeight={600} className='text-orange-500'>Manager</Typography>
+                  </Stack>
+                  <Typography alignSelf={'flex-end'} color={'GrayText'} variant='body2'>- Manage Easy, Manage Smart!</Typography>
+                </Stack>
 
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+              </Stack>
+
+                <Stack mt={4} spacing={2} width={is480?"95vw":'28rem'} component={'form'} noValidate onSubmit={handleSubmit}>
+
+                    {error && (
+                      <Box sx={{ 
+                        backgroundColor: 'error.light', 
+                        borderLeft: 4, 
+                        borderColor: 'error.main', 
+                        p: 2 
+                      }}>
+                        <Typography color="error.main">{error}</Typography>
+                      </Box>
+                    )}
+
+                    <motion.div whileHover={{y:-5}}>
+                      <TextField 
+                        fullWidth 
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder='Username'
+                      />
+                    </motion.div>
+
+                    <motion.div whileHover={{y:-5}}>
+                      <TextField 
+                        type='password' 
+                        fullWidth 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder='Password'
+                      />
+                    </motion.div>
+                    
+                    <motion.div whileHover={{scale:1.020}} whileTap={{scale:1}}>
+                      <LoadingButton 
+                        fullWidth  
+                        sx={{ 
+                          height: '2.5rem', 
+                        }} 
+                        type='submit' 
+                        variant='contained'
+                        className='hover:bg-orange-500'
+                      >
+                        Login
+                      </LoadingButton>
+                    </motion.div>
+
+                </Stack>
+        </Stack>
+    </Stack>
   );
 }
