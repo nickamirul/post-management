@@ -1,8 +1,7 @@
 import React from 'react';
 import { Comment } from '../types';
 import { useAuth } from '../hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { deleteComment } from '../lib/features/postsSlice';
+
 
 interface CommentProps {
   comment: Comment;

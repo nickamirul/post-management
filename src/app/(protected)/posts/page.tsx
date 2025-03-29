@@ -17,8 +17,6 @@ export default function PostsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('Auth Loading:', authLoading); // Debugging line
-    console.log('isAuthenticated:', isAuthenticated); // Debugging line
     if (authLoading) return; // Wait for loading to finish
     if (!isAuthenticated) {
       router.push('/login');

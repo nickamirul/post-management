@@ -30,8 +30,6 @@ export default function PostDetailPage() {
   const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Auth Loading:', authLoading);
-    console.log('isAuthenticated:', isAuthenticated);
     if (authLoading) return;
     if (!isAuthenticated) {
       router.push('/login');
