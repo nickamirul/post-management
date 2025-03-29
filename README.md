@@ -14,6 +14,25 @@ This is a React.js assessment project built using **Next.js** with **Redux** for
 - **Unit Testing:** Jest  
 - **Deployment:** Vercel  
 
+- **API Endpoint:** [JSONPlaceholder Posts](https://jsonplaceholder.typicode.com/posts)  
+- **API Endpoint:** [JSONPlaceholder Comments](https://jsonplaceholder.typicode.com/comments)  
+
+## 👥 User Roles & Credentials
+
+The application has two types of users:  
+
+1. **Admin**  
+   - Can **view, edit, and delete** posts and comments.  
+   - **Credentials:**  
+     - **Username:** `admin`  
+     - **Password:** `admin123`  
+
+2. **Normal User**  
+   - Can **view** the list of posts and comments only.  
+   - **Credentials:**  
+     - **Username:** `user`  
+     - **Password:** `user123`  
+
 ## 📦 Installation & Setup
 
 1. **Clone the repository**
