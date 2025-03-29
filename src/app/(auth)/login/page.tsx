@@ -3,11 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../hooks/useAuth';
 import { FormEvent, useState, useEffect } from 'react';
-import {Box, Stack, TextField, Typography} from '@mui/material'
-import { motion } from 'framer-motion'
+import { Box, Stack, TextField, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 import { LoadingButton } from '@mui/lab';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic'; // Import dynamic from Next.js
 import postAnimation from '../../../assets/animations/post.json';
+
+// Dynamically import Lottie to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 const HARDCODED_USERS = [
   {
@@ -31,18 +34,19 @@ export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
   const [is900, setIs900] = useState<boolean>(false);
-  const is480 = window.innerWidth < 480;
+  const [is480, setIs480] = useState<boolean>(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIs900(window.innerWidth >= 900);
+      setIs480(window.innerWidth < 480);
     };
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize); // Add event listener
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize); // Cleanup on unmount
     };
   }, []);
 
@@ -63,79 +67,71 @@ export default function LoginPage() {
   };
 
   return (
-    <Stack width={'100vw'} height={'100vh'} flexDirection={'row'} sx={{overflowY:"hidden"}}>
-        
-        {is900 && 
+    <Stack width={'100vw'} height={'100vh'} flexDirection={'row'} sx={{ overflowY: "hidden" }}>
+      {is900 && 
         <Stack bgcolor={'black'} flex={1} justifyContent={'center'} alignItems={'center'}>
           <Lottie 
             animationData={postAnimation} 
             style={{ width: '50%', height: 'auto' }}
           />
         </Stack> 
-        }
+      }
 
-        <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
-
-              <Stack flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
-
-                <Stack rowGap={'.4rem'}>
-                  <Stack flexDirection={'row'} alignItems={'baseline'}>
-                    <Typography variant='h2' sx={{wordBreak:"break-word"}} fontWeight={600}>Post</Typography> 
-                    <Typography variant='h2'  sx={{wordBreak:"break-word"}} fontWeight={600} className='text-orange-500'>Manager</Typography>
-                  </Stack>
-                  <Typography alignSelf={'flex-end'} color={'GrayText'} variant='body2'>- Manage Easy, Manage Smart!</Typography>
-                </Stack>
-
-              </Stack>
-
-                <Stack mt={4} spacing={2} width={is480?"95vw":'28rem'} component={'form'} noValidate onSubmit={handleSubmit}>
-
-                    {error && (
-                      <Box sx={{ 
-                        backgroundColor: 'error.light', 
-                        borderLeft: 4, 
-                        borderColor: 'error.main', 
-                        p: 2 
-                      }}>
-                        <Typography color="white">{error}</Typography>
-                      </Box>
-                    )}
-
-                    <motion.div whileHover={{y:-5}}>
-                      <TextField 
-                        fullWidth 
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder='Username'
-                      />
-                    </motion.div>
-
-                    <motion.div whileHover={{y:-5}}>
-                      <TextField 
-                        type='password' 
-                        fullWidth 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder='Password'
-                      />
-                    </motion.div>
-                    
-                    <motion.div whileHover={{scale:1.020}} whileTap={{scale:1}}>
-                      <LoadingButton 
-                        fullWidth  
-                        sx={{ 
-                          height: '2.5rem', 
-                        }} 
-                        type='submit' 
-                        variant='contained'
-                        className='hover:bg-orange-500'
-                      >
-                        Login
-                      </LoadingButton>
-                    </motion.div>
-
-                </Stack>
+      <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
+        <Stack flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
+          <Stack rowGap={'.4rem'}>
+            <Stack flexDirection={'row'} alignItems={'baseline'}>
+              <Typography variant='h2' sx={{ wordBreak: "break-word" }} fontWeight={600}>Post</Typography> 
+              <Typography variant='h2' sx={{ wordBreak: "break-word" }} fontWeight={600} className='text-orange-500'>Manager</Typography>
+            </Stack>
+            <Typography alignSelf={'flex-end'} color={'GrayText'} variant='body2'>- Manage Easy, Manage Smart!</Typography>
+          </Stack>
         </Stack>
+
+        <Stack mt={4} spacing={2} width={is480 ? "95vw" : '28rem'} component={'form'} noValidate onSubmit={handleSubmit}>
+          {error && (
+            <Box sx={{ 
+              backgroundColor: 'error.light', 
+              borderLeft: 4, 
+              borderColor: 'error.main', 
+              p: 2 
+            }}>
+              <Typography color="white">{error}</Typography>
+            </Box>
+          )}
+
+          <motion.div whileHover={{ y: -5 }}>
+            <TextField 
+              fullWidth 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder='Username'
+            />
+          </motion.div>
+
+          <motion.div whileHover={{ y: -5 }}>
+            <TextField 
+              type='password' 
+              fullWidth 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Password'
+            />
+          </motion.div>
+          
+          <motion.div whileHover={{ scale: 1.020 }} whileTap={{ scale: 1 }}>
+            <LoadingButton 
+              fullWidth  
+              sx={{ height: '2.5rem' }} 
+              type='submit' 
+              variant='contained'
+              className='hover:bg-orange-500'
+            >
+              Login
+            </LoadingButton>
+          </motion.div>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }
