@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../hooks/useAuth';
 import { FormEvent, useState } from 'react';
-import {Box, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+// import {Box, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import {Box, Stack, TextField, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 import { LoadingButton } from '@mui/lab';
 import Lottie from 'lottie-react';
@@ -30,9 +31,9 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const router = useRouter();
-  const theme = useTheme();
-  const is900 = useMediaQuery(theme.breakpoints.down(900));
-  const is480 = useMediaQuery(theme.breakpoints.down(480));
+  // const theme = useTheme();
+  // const is900 = useMediaQuery(theme.breakpoints.down(900));
+  // const is480 = useMediaQuery(theme.breakpoints.down(480));
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
