@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../hooks/useAuth';
 import { FormEvent, useState, useEffect } from 'react';
-import {Box, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import {Box, Stack, TextField, Typography} from '@mui/material'
 import { motion } from 'framer-motion'
 import { LoadingButton } from '@mui/lab';
 import Lottie from 'lottie-react';
