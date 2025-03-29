@@ -141,13 +141,13 @@ export default function PostDetailPage() {
             />
             <button
               onClick={handleSaveButtonClick}
-              className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600"
             >
               Save
             </button>
             <button
               onClick={handleCancelButtonClick}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
               Cancel
             </button>
@@ -162,13 +162,13 @@ export default function PostDetailPage() {
           <div className="flex space-x-2 mt-4">
             <button
               onClick={handleEditButtonClick}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Edit
             </button>
             <button
               onClick={handleDeletePost}
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
             >
               Delete
             </button>

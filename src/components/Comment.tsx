@@ -22,7 +22,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comment, onDelete }) => {
       {isAuthenticated && user?.isAdmin && (
         <button
           onClick={() => onDelete(comment.id)}
-          className="bg-red-500 text-white px-4 py-2 rounded ml-4"
+          className="bg-red-500 text-white px-4 py-2 rounded ml-4 hover:bg-red-600"
         >
           Delete
         </button>
