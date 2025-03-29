@@ -13,6 +13,7 @@ import {
 } from '../../../../lib/features/postsSlice';
 import CommentComponent from '../../../../components/Comment';
 import { useAuth } from '../../../../hooks/useAuth';
+import Notification from '../../../../components/Notification';
 
 export default function PostDetailPage() {
   const { id } = useParams();
@@ -26,6 +27,7 @@ export default function PostDetailPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
   const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(true);
+  const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('Auth Loading:', authLoading);
@@ -54,18 +56,21 @@ export default function PostDetailPage() {
         })
       );
       setIsEditing(false);
+      setNotification('Post updated successfully!');
     }
   };
 
   const handleDeletePost = () => {
     if (currentPost) {
       dispatch(deletePost(currentPost.id));
+      setNotification('Post deleted successfully!');
       router.push('/posts');
     }
   };
 
   const handleDeleteComment = (commentId: number) => {
     dispatch(deleteComment(commentId));
+    setNotification('Comment deleted successfully!');
   };
 
   const handleEditButtonClick = () => {
@@ -82,6 +87,19 @@ export default function PostDetailPage() {
     setIsEditing(false);
     setShowEditDeleteButtons(true);
   };
+
+  const closeNotification = () => {
+    setNotification(null);
+  };
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        closeNotification();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
 
   if (loading) {
     return (
@@ -109,6 +127,9 @@ export default function PostDetailPage() {
 
   return (
     <div className="container mx-auto p-4">
+      {notification && (
+        <Notification message={notification} onClose={closeNotification} />
+      )}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         {isEditing ? (
           <div className="mb-4">
