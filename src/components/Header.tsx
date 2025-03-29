@@ -24,7 +24,7 @@ const Header = () => {
             noWrap
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: "flex",
               fontWeight: 700,
               color: "inherit",
               textDecoration: "none",
