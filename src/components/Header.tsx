@@ -15,7 +15,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white text-black p-4 shadow-md">
+    <header className="bg-white text-black p-4 shadow-md sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/posts" className="text-2xl font-bold">
           <Typography
