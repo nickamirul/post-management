@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../hooks/useAuth';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import {Box, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { motion } from 'framer-motion'
 import { LoadingButton } from '@mui/lab';
@@ -30,9 +30,21 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const router = useRouter();
-  const theme = useTheme();
-  const is900 = useMediaQuery(theme.breakpoints.down(900));
-  const is480 = useMediaQuery(theme.breakpoints.down(480));
+  const [is900, setIs900] = useState<boolean>(false);
+  const is480 = window.innerWidth < 480;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIs900(window.innerWidth >= 900);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -53,7 +65,7 @@ export default function LoginPage() {
   return (
     <Stack width={'100vw'} height={'100vh'} flexDirection={'row'} sx={{overflowY:"hidden"}}>
         
-        {!is900 && 
+        {is900 && 
         <Stack bgcolor={'black'} flex={1} justifyContent={'center'} alignItems={'center'}>
           <Lottie 
             animationData={postAnimation} 
