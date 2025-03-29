@@ -1,9 +1,9 @@
 import postsReducer, {
     fetchPosts,
-    fetchPostById,
-    fetchCommentsByPostId,
+    // fetchPostById,
+    // fetchCommentsByPostId,
     updatePost,
-    deletePost,
+    // deletePost,
     deleteComment,
     PostsState,
   } from '../postsSlice';

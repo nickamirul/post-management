@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useAuth } from '../hooks/useAuth';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-// import { theme } from '../theme/theme';
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
