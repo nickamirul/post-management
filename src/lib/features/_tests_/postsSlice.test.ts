@@ -4,7 +4,7 @@ import postsReducer, {
     // fetchCommentsByPostId,
     updatePost,
     // deletePost,
-    deleteComment,
+    removeComment,
     PostsState,
   } from '../postsSlice';
   import { Post, Comment } from '../../../types';
@@ -86,13 +86,13 @@ import postsReducer, {
       });
     });
   
-    describe('deleteComment', () => {
+    describe('removeComment', () => {
       it('should delete the comment', () => {
         const stateWithComment = {
           ...initialState,
           comments: [mockComment],
         };
-        const action = { type: deleteComment.type, payload: mockComment.id };
+        const action = { type: removeComment.fulfilled.type, payload: mockComment.id };
         const state = postsReducer(stateWithComment, action);
         
         expect(state.comments).toEqual([]);

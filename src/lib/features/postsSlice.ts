@@ -43,6 +43,22 @@ export const fetchCommentsByPostId = createAsyncThunk(
   }
 );
 
+export const deleteComment = createAsyncThunk(
+  'posts/deleteComment',
+  async (commentId: number) => {
+    await axios.delete(`https://jsonplaceholder.typicode.com/comments/${commentId}`);
+    return commentId; // Return the commentId to be used in the reducer
+  }
+);
+
+export const removeComment = createAsyncThunk(
+  'posts/removeComment',
+  async (commentId: number) => {
+    await axios.delete(`https://jsonplaceholder.typicode.com/comments/${commentId}`);
+    return commentId; // Return the commentId to be used in the reducer
+  }
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
@@ -61,9 +77,6 @@ const postsSlice = createSlice({
       if (state.currentPost?.id === action.payload) {
         state.currentPost = null;
       }
-    },
-    deleteComment: (state, action: PayloadAction<number>) => {
-      state.comments = state.comments.filter(comment => comment.id !== action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -103,9 +116,12 @@ const postsSlice = createSlice({
       .addCase(fetchCommentsByPostId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch comments';
+      })
+      .addCase(removeComment.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(comment => comment.id !== action.payload);
       });
   },
 });
 
-export const { updatePost, deletePost, deleteComment } = postsSlice.actions;
+export const { updatePost, deletePost } = postsSlice.actions;
 export default postsSlice.reducer;

@@ -2,22 +2,21 @@ import { render, screen } from '@testing-library/react';
 import Header from '../Header';
 import { Provider } from 'react-redux';
 import { store } from '../../lib/store';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Mock the useRouter hook
-jest.mock('next/router', () => ({
-  useRouter: jest.fn()
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
 }));
 
 // Mock the auth context if you're using React context
 // Or remove this if you're not using auth in your Header
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useContext: () => ({
+jest.mock('../../hooks/useAuth', () => ({
+  useAuth: () => ({
     user: null,
     isAuthenticated: false,
-    logout: jest.fn()
-  })
+    logout: jest.fn(),
+  }),
 }));
 
 describe('Header', () => {
@@ -28,7 +27,7 @@ describe('Header', () => {
       pathname: '/',
       route: '/',
       query: {},
-      asPath: '/'
+      asPath: '/',
     });
   });
 

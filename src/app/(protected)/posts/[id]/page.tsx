@@ -9,7 +9,7 @@ import {
   fetchCommentsByPostId,
   updatePost,
   deletePost,
-  deleteComment,
+  removeComment,
 } from '../../../../lib/features/postsSlice';
 import CommentComponent from '../../../../components/Comment';
 import { useAuth } from '../../../../hooks/useAuth';
@@ -67,8 +67,14 @@ export default function PostDetailPage() {
   };
 
   const handleDeleteComment = (commentId: number) => {
-    dispatch(deleteComment(commentId));
-    setNotification('Comment deleted successfully!');
+    console.log('Deleting comment with ID:', commentId);
+    dispatch(removeComment(commentId)).then(() => {
+        console.log('Comment deleted successfully');
+        setNotification('Comment deleted successfully!');
+    }).catch((error) => {
+        console.error('Error deleting comment:', error);
+        setNotification('Failed to delete comment.');
+    });
   };
 
   const handleEditButtonClick = () => {
@@ -98,6 +104,8 @@ export default function PostDetailPage() {
       return () => clearTimeout(timer);
     }
   }, [notification]);
+
+  console.log('Current notification state:', notification);
 
   if (loading) {
     return (
