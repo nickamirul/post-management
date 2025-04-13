@@ -47,34 +47,43 @@ export default function PostDetailPage() {
 
   const handleUpdatePost = () => {
     if (currentPost) {
-      dispatch(
-        updatePost({
-          ...currentPost,
-          title: editedTitle,
-        })
-      );
-      setIsEditing(false);
-      setNotification('Post updated successfully!');
+      try {
+        dispatch(
+          updatePost({
+            ...currentPost,
+            title: editedTitle,
+          })
+        );
+        setIsEditing(false);
+        setNotification('Post updated successfully!');
+      } catch (err) {
+        console.error('Error updating post:', err);
+        setNotification('Failed to update post. Please try again.');
+      }
     }
   };
 
   const handleDeletePost = () => {
     if (currentPost) {
-      dispatch(deletePost(currentPost.id));
-      setNotification('Post deleted successfully!');
-      router.push('/posts');
+      try {
+        dispatch(deletePost(currentPost.id));
+        setNotification('Post deleted successfully!');
+        router.push('/posts');
+      } catch (err) {
+        console.error('Error deleting post:', err);
+        setNotification('Failed to delete post. Please try again.');
+      }
     }
   };
 
-  const handleDeleteComment = (commentId: number) => {
-    console.log('Deleting comment with ID:', commentId);
-    dispatch(removeComment(commentId)).then(() => {
-        console.log('Comment deleted successfully');
-        setNotification('Comment deleted successfully!');
-    }).catch((error) => {
-        console.error('Error deleting comment:', error);
-        setNotification('Failed to delete comment.');
-    });
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      await dispatch(removeComment(commentId)).unwrap();
+      setNotification('Comment deleted successfully!');
+    } catch (err) {
+      console.error('Error deleting comment:', err);
+      setNotification('Failed to delete comment. Please try again.');
+    }
   };
 
   const handleEditButtonClick = () => {
@@ -100,7 +109,7 @@ export default function PostDetailPage() {
     if (notification) {
       const timer = setTimeout(() => {
         closeNotification();
-      }, 3000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [notification]);
