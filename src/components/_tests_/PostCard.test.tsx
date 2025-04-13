@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import PostCard from '../PostCard';
 import { Post } from '../../types';
 
@@ -22,5 +22,19 @@ describe('PostCard', () => {
     
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', `/posts/${mockPost.id}`);
+  });
+
+  it('stops event propagation when clicking the "See post" button', () => {
+    const mockOnClick = jest.fn();
+    render(
+      <div onClick={mockOnClick}>
+        <PostCard post={mockPost} />
+      </div>
+    );
+    
+    const seePostButton = screen.getByText('See post');
+    fireEvent.click(seePostButton);
+    
+    expect(mockOnClick).not.toHaveBeenCalled();
   });
 });

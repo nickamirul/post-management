@@ -54,6 +54,7 @@ The application has two types of users:
 **Running tests**
    ```sh
    npm test
+   npx jest --coverage
    ```
 
 **Author**

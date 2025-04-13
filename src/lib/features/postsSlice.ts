@@ -45,17 +45,25 @@ export const fetchCommentsByPostId = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
   'posts/deleteComment',
-  async (commentId: number) => {
-    await axios.delete(`https://jsonplaceholder.typicode.com/comments/${commentId}`);
-    return commentId; // Return the commentId to be used in the reducer
+  async (commentId: number, { rejectWithValue }) => {
+    try {
+      await axios.delete(`https://jsonplaceholder.typicode.com/comments/${commentId}`);
+      return commentId;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to delete comment');
+    }
   }
 );
 
 export const removeComment = createAsyncThunk(
   'posts/removeComment',
-  async (commentId: number) => {
-    await axios.delete(`https://jsonplaceholder.typicode.com/comments/${commentId}`);
-    return commentId; // Return the commentId to be used in the reducer
+  async (commentId: number, { rejectWithValue }) => {
+    try {
+      await axios.delete(`https://jsonplaceholder.typicode.com/comments/${commentId}`);
+      return commentId;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to remove comment');
+    }
   }
 );
 
@@ -67,6 +75,8 @@ const postsSlice = createSlice({
       const index = state.posts.findIndex(p => p.id === action.payload.id);
       if (index !== -1) {
         state.posts[index] = action.payload;
+      } else {
+        state.posts.push(action.payload);
       }
       if (state.currentPost?.id === action.payload.id) {
         state.currentPost = action.payload;
@@ -117,8 +127,30 @@ const postsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch comments';
       })
-      .addCase(removeComment.fulfilled, (state, action) => {
+      .addCase(deleteComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.loading = false;
         state.comments = state.comments.filter(comment => comment.id !== action.payload);
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(removeComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeComment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.comments = state.comments.filter(comment => comment.id !== action.payload);
+        state.error = null;
+      })
+      .addCase(removeComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
